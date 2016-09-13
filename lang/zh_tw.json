@@ -1,0 +1,8 @@
+{
+	  "username" : "[i] 姓名 : %s"
+	, "poke_storage" : "[i] 寵物空間 : %d"
+	, "item_storage" : "[i] 背包空間 : %d"
+	, "poke_coin" : "[i] 金幣 : %d"
+	, "stardust" : "[i] 星晨 : %d"
+
+}

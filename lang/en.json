@@ -1,0 +1,7 @@
+{
+	  "username" : "[i] Username :  %s"
+	, "poke_storage" : "[i] Poke Storage : %d"
+	, "item_storage" : "[i] Item Storage : %d"
+	, "poke_coin" : "[i] Pokecoin : %d"
+	, "stardust" : "[i] Stardust : %d"
+}

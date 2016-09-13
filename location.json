@@ -1,0 +1,29 @@
+{
+	"location": {
+		"memo": "北投公園",
+		"type" : "coords",
+		"coords" : {
+			"latitude" : 25.136476,
+			"longitude" : 121.506314,
+			"altitude" : 0
+		}
+	},
+	"gamenation": {
+		"memo" : "gamenation",
+		"type" : "coords",
+		"coords" : {
+			"latitude" : 25.051131,
+			"longitude" : 121.567876,
+			"altitude" : 0
+		}
+	},
+	"location2": {
+		"memo" : "前港公園",
+		"type" : "coords",
+		"coords" : {
+			"latitude" : 25.086609,
+			"longitude" : 121.52070,
+			"altitude" : 0
+		}
+	}
+}

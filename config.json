@@ -1,0 +1,36 @@
+{
+	"port" : 5555,
+	"redis" : {
+		"key" : "g_",
+		"port" : 6379,
+		"host" : "127.0.0.1"
+	},
+	"api_url" : "http://xgo-api.elfjane.com",
+	"debug_mode_on" : true,
+	"heartBeat" : 10000,
+	"searchFortTime" : 600000,
+	"move_meter" : {
+		"min": 0,
+		"max": 10
+	},
+	"move_close" : 10,
+	"move_base" : 360,
+	"move_range" : {
+		"N"   : {"min" : -22.5, "max" : 22.5},
+		"NNE" : {"min" : 0,     "max" : 45},
+		"NE"  : {"min" : 22.5,  "max" : 67.5},
+		"ENE" : {"min" : 45,    "max" : 90},
+		"E"   : {"min" : 67.5,  "max" : 112.5},
+		"ESE" : {"min" : 90,    "max" : 135},
+		"SE"  : {"min" : 112.5, "max" : 157.5},
+		"SSE" : {"min" : 135,   "max" : 180},
+		"S"   : {"min" : 157.5, "max" : 202.5},
+		"SSW" : {"min" : 180,   "max" : 225},
+		"SW"  : {"min" : 202.5, "max" : 247.5},
+		"WSW" : {"min" : 225,   "max" : 270},
+		"W"   : {"min" : 247.5, "max" : 292.5},
+		"WNW" : {"min" : 270,   "max" : 315},
+		"NW"  : {"min" : 292.5, "max" : 337.5},
+		"NNW" : {"min" : 315,   "max" : 360}
+	}
+}

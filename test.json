@@ -1,0 +1,137 @@
+{
+"3442aeb0dbf":{
+"SpawnPointId":"3442aeb0dbf",
+"EncounterId":{
+"low":1629902029,
+"high":1059287504,
+"unsigned":true
+},
+"PokedexTypeId":41,
+"ExpirationTimeMs":{
+"low":-862883620,
+"high":342,
+"unsigned":false
+},
+"Latitude":25.087365397550148,
+"Longitude":121.52089765324622,
+"info":{
+"id":"41",
+"num":"041",
+"name":"Zubat",
+"img":"http://www.serebii.net/pokemongo/pokemon/041.png",
+"type":"Poison / Flying",
+"height":"0.79 m",
+"weight":"7.5 kg",
+"candy":"50 Zubat Candy",
+"egg":"2 km"
+}
+},
+"3442aeb0dff":{
+"SpawnPointId":"3442aeb0dff",
+"EncounterId":{
+"low":-900013315,
+"high":1456367999,
+"unsigned":true
+},
+"PokedexTypeId":42,
+"ExpirationTimeMs":{
+"low":-860251460,
+"high":342,
+"unsigned":false
+},
+"Latitude":25.086949801858495,
+"Longitude":121.52125452341637,
+"info":{
+"id":"42",
+"num":"042",
+"name":"Golbat",
+"img":"http://www.serebii.net/pokemongo/pokemon/042.png",
+"type":"Poison / Flying",
+"height":"1.60 m",
+"weight":"55.0 kg",
+"candy":"None",
+"egg":"Not in Eggs"
+}
+},
+"3442aeb135d":{
+"SpawnPointId":"3442aeb135d",
+"EncounterId":{
+"low":-234684595,
+"high":-1952965553,
+"unsigned":true
+},
+"PokedexTypeId":60,
+"ExpirationTimeMs":{
+"low":-858176396,
+"high":342,
+"unsigned":false
+},
+"Latitude":25.085958615786048,
+"Longitude":121.52018390957343,
+"info":{
+"id":"60",
+"num":"060",
+"name":"Poliwag",
+"img":"http://www.serebii.net/pokemongo/pokemon/060.png",
+"type":"Water",
+"height":"0.61 m",
+"weight":"12.4 kg",
+"candy":"25 Poliwag Candy",
+"egg":"5 km"
+}
+},
+"3442aeb1331":{
+"SpawnPointId":"3442aeb1331",
+"EncounterId":{
+"low":2002876685,
+"high":-1314419440,
+"unsigned":true
+},
+"PokedexTypeId":48,
+"ExpirationTimeMs":{
+"low":-857331132,
+"high":342,
+"unsigned":false
+},
+"Latitude":25.086332189094172,
+"Longitude":121.52000547296102,
+"info":{
+"id":"48",
+"num":"048",
+"name":"Venonat",
+"img":"http://www.serebii.net/pokemongo/pokemon/048.png",
+"type":"Bug / Poison",
+"height":"0.99 m",
+"weight":"30.0 kg",
+"candy":"50 Venonat Candy",
+"egg":"5 km"
+}
+},
+"3442aeb14f5":{
+"SpawnPointId":"3442aeb14f5",
+"EncounterId":{
+"low":982277629,
+"high":570535552,
+"unsigned":true
+},
+"PokedexTypeId":133,
+"ExpirationTimeMs":{
+"low":-857333836,
+"high":342,
+"unsigned":false
+},
+"Latitude":25.08537724649988,
+"Longitude":121.52054078196524,
+"info":{
+"id":"133",
+"num":"133",
+"name":"Eevee",
+"img":"http://www.serebii.net/pokemongo/pokemon/133.png",
+"type":"Normal",
+"height":"0.30 m",
+"weight":"6.5 kg",
+"candy":"25 Eevee Candy (Evolution decided at random. Or, for first evolution, rename Eevee: Rainer => Vaporeon, Sparky => Jolteon, Pyro => Flareon)",
+"egg":"10 km"
+}
+}
+}
