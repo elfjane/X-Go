@@ -1,0 +1,82 @@
+<html>
+<head>
+<title>Elfjane - Items</title>
+<meta name="viewport" content="initial-scale=1.0">
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="//demo.elfjane.com/pokemon/css/style.css">
+<link rel="stylesheet" href="http://demo.elfjane.com/pokemon/css/animate.min.css">
+<script src="//code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="//demo.elfjane.com/pokemon/global.js"></script>
+<script src="//demo.elfjane.com/pokemon/mapstyle.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/gameui.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/lang/pokemon/pokemons_zh_tw.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/lang/pokemon/pokemons_en.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/lang/items/items_en.js"></script>
+<style>
+</style>
+<style type="text/css">
+body{
+	margin: 10px;
+}
+#cont {
+  position: fixed;
+}
+
+#cont {
+  margin-top: 0;
+}
+</style>
+
+</head>
+<body>
+<span id="items_total"></span>
+
+<div class="clear"></div>
+<div id="items_data" style="padding:10px 0"></div>
+
+<script>
+
+function sort_item_id(a,b) {
+	return a.item_id - b.item_id;
+}
+
+var items_total = ___items_total___;
+var iv_items = ___items___;
+var array_items = [];
+var array_items_name = [];
+function update() {
+	var text_data = '';
+	$.each( array_items, function( key, item ) {
+		//console.log(pokemon);
+		if (item.unseen == true) {
+			return;
+		}
+		var item_id = item.item_id;
+		var item_name = array_items_name[item_id].name;
+		text_data += '<div class="itemlist">';
+		text_data += '<img src="http://demo.elfjane.com/pokemon/img/items/'+ item_id +'.png" />'
+		text_data += ' x '+item.count+'';
+		text_data += '<div>'+item_name+'</div>';
+		text_data += '</div>';
+		
+	});
+	$("#items_data").html(text_data);
+	$("#items_total").html(items_total);
+}
+
+
+$(function() {
+	$.each( iv_items, function( key, item ) {
+		array_items.push(item);	
+	});
+	$.each( g_items_en_info.items, function( key, info ) {
+		console.log(info);
+		var id = info.id
+		array_items_name[id] = info;	
+	});
+	array_items.sort(sort_item_id);
+	update();
+});
+</script>
+</body>
+</html>

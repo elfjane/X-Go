@@ -1,0 +1,213 @@
+<html>
+<head>
+<title>Elfjane - Pokemon</title>
+<meta name="viewport" content="initial-scale=1.0">
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="//demo.elfjane.com/pokemon/css/style.css">
+<link rel="stylesheet" href="http://demo.elfjane.com/pokemon/css/animate.min.css">
+<script src="//code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="//demo.elfjane.com/pokemon/global.js"></script>
+<script src="//demo.elfjane.com/pokemon/mapstyle.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/gameui.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/lang/pokemon/pokemons_zh_tw.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/lang/pokemon/pokemons_en.js"></script>
+<style>
+</style>
+<style type="text/css">
+body{
+	margin: 10px;
+}
+#cont {
+  position: fixed;
+}
+
+#cont {
+  margin-top: 0;
+}
+</style>
+
+</head>
+<body>
+<div id="cont">
+	<input type="button" value="TIME" id="btn_sort_time" class="pokemonui">
+	<input type="button" value="CP" id="btn_sort_cp" class="pokemonui">
+	<input type="button" value="ID" id="btn_sort_id" class="pokemonui">
+	<input type="button" value="HP" id="btn_sort_hp" class="pokemonui">
+	<input type="button" value="IV" id="btn_sort_iv" class="pokemonui">
+	<input type="button" value="LV" id="btn_sort_lv" class="pokemonui">
+	<input type="button" value="EGGS" style="float:right" id="btn_eggs">
+	<input type="button" value="POKEMON" id="btn_pokemon">
+</div>
+
+<div id="pokemon" class="pokemonui" style="padding:30px 0"></div>
+<div id="eggs" class="eggsui" style="padding:30px 0"></div>
+
+<script>
+
+function sort_cp(a,b) {
+	return b.cp - a.cp;
+}
+function sort_pokemon_id(a,b) {
+	return a.pokemon_id - b.pokemon_id;
+}
+
+function sort_pokemon_iv(a,b) {
+	return b.iv - a.iv;
+}
+
+function sort_level(a,b) {
+	return b.level - a.level;
+}
+
+function sort_hp(a,b) {
+	return b.stamina_max - a.stamina_max;
+}
+
+function sort_time(a,b) {
+	return b.data.creation_time_ms - a.data.creation_time_ms;
+}
+var iv_pokemon = ___pokemon___;
+var iv_eggs = ___eggs___;
+var array_pokemon = [];
+var sort_type = 'cp';
+var img_favorite = 'http://demo.elfjane.com/pokemon/img/ui/favorite.png';
+var img_favorite_u = 'http://demo.elfjane.com/pokemon/img/ui/favorite_u.png';
+function update() {
+	var text_data = '';
+	$.each( array_pokemon, function( key, pokemon ) {
+		//console.log(pokemon);
+		var id = pokemon.pokemon_id - 1;
+		var pokemon_name = g_pokemons_info.pokemon[id].name + '('+pokemon.level+')'+'<div>' +g_pokemons_en_info.pokemon[id].name+ '</div>';
+		text_data += '<div class="pokemonlist">';
+		text_data += '<div class="pokemonFavorite" style="">';
+		if (pokemon.favorite) {
+			text_data += '<img src="'+img_favorite+'" class="btn_favorite" isFavorite=0 pokemon_key="'+pokemon.key+'" />';
+		} else {
+			text_data += '<img src="'+img_favorite_u+'" class="btn_favorite" isFavorite=1 pokemon_key="'+pokemon.key+'" />';
+		}
+		text_data += '</div>';
+		text_data += '<div class="type">';
+		switch(sort_type)
+		{
+			/*
+			case 'hp':
+			{
+				text_data += 'HP '+pokemon.stamina_max;
+			} break;
+			case 'id':
+			{
+				text_data += 'id '+pokemon.pokemon_id;
+			} break;
+			*/
+			default:
+			{
+				text_data += 'CP '+pokemon.cp;
+			} break;
+		}
+
+		text_data += '</div>';
+		text_data += '<div class="pokemonImg"><img src="http://demo.elfjane.com/pokemon/img/sugimori/'+ paddingLeft(pokemon.pokemon_id.toString(),3) +'.png" /></div>';
+		text_data += '<div class="clear"></div>';
+		text_data += '<div>'+pokemon_name+'</div>';
+		text_data += '<div class="pokemonAttrib">';
+		text_data += '<span class="attack" title="attack">'+ pokemon.individual_attack +'</span> / ';
+		text_data += '<span class="defense" title="defense">'+ pokemon.individual_defense +'</span> / ';
+		text_data += '<span class="stamina" title="stamina">'+ pokemon.individual_stamina +'</span>';
+		text_data += '</div>';
+		text_data += '<div>'+pokemon.iv+'%</div>';
+		text_data += '<div class="pokemonTools">';
+		text_data += '<input type="button" value="T">';
+		text_data += '</div>';
+		text_data += '</div>';
+		
+	});
+	$("#pokemon").html(text_data);
+	$( ".btn_favorite" ).click(function() {
+		var pokemon_key = $(this).attr('pokemon_key');
+		var isFavorite = $(this).attr('isFavorite');
+		var self = this;
+
+		$.getJSON('/set/pokemon/favorite/'+pokemon_key+'/' +isFavorite, function(data) {
+			console.log(data);
+			if (data.Result != 1) {
+				return;
+			}
+			if (isFavorite == 1) {
+				$(self).attr('src', img_favorite);
+				$(self).attr('isFavorite', 1);
+			} else {
+				$(self).attr('src', img_favorite_u);
+				$(self).attr('isFavorite', 0);
+			}
+		});
+	});
+}
+
+function update_eggs() {
+	var text_data = '';
+	$.each( iv_eggs, function( key, eggs ) {
+		//console.log(pokemon);
+		var start = 0.0;
+		if (eggs.egg_km_walked_start != null) {
+			start = parseFloat(eggs.egg_km_walked_start).toFixed(1);
+		} 
+		start = parseFloat(start).toFixed(1);
+		text_data += '<div class="eggslist">';
+		text_data += '<div class="eggs_box"><img src="http://demo.elfjane.com/pokemon/img/items/0.png" /></div><div>'+start+'/'+parseFloat(eggs.egg_km_walked_target).toFixed(1)+' km</div></div>';
+		
+	});
+	$("#eggs").html(text_data);
+}
+
+$(function() {
+	$.each( iv_pokemon, function( key, pokemon ) {
+		pokemon.key = key;
+		array_pokemon.push(pokemon);	
+	});
+	$( "#btn_sort_cp" ).click(function() {
+		array_pokemon.sort(sort_cp);
+		sort_type = 'cp';
+		update();
+	});
+	$( "#btn_sort_id" ).click(function() {
+		array_pokemon.sort(sort_pokemon_id);
+		sort_type = 'id';
+		update();
+	});
+	$( "#btn_sort_hp" ).click(function() {
+		array_pokemon.sort(sort_hp);
+		sort_type = 'hp';
+		update();
+	});
+	$( "#btn_sort_lv" ).click(function() {
+		array_pokemon.sort(sort_level);
+		sort_type = 'level';
+		update();
+	});
+	$( "#btn_sort_iv" ).click(function() {
+		array_pokemon.sort(sort_pokemon_iv);
+		sort_type = 'iv';
+		update();
+	});
+	$( "#btn_sort_time" ).click(function() {
+		array_pokemon.sort(sort_time);
+		sort_type = 'time';
+		update();
+	});
+	$( "#btn_eggs" ).click(function() {
+		$( ".pokemonui" ).hide();
+		$( ".eggsui" ).show();
+		update_eggs();
+	});
+	$( "#btn_pokemon" ).click(function() {
+		$( ".pokemonui" ).show();
+		$( ".eggsui" ).hide();
+		update();
+	});
+	$( ".eggsui" ).hide();
+	array_pokemon.sort(sort_time);
+	update();
+});
+</script>
+</body>
+</html>

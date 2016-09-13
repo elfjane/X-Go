@@ -1,0 +1,433 @@
+<html>
+<head>
+<title>Elfjane pokemon - Debug</title>
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="//demo.elfjane.com/pokemon/css/style.css">
+<link rel="stylesheet" href="http://demo.elfjane.com/pokemon/css/animate.min.css">
+<script src="//code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="//demo.elfjane.com/pokemon/global.js"></script>
+<script src="//demo.elfjane.com/pokemon/mapstyle.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/gameui.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/lang/pokemon/pokemons_zh_tw.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/lang/pokemon/pokemons_en.js"></script>
+
+<style>
+.item {
+-webkit-animation-duration 300s;
+  -vendor-animation-duration: 300s;
+  -vendor-animation-delay: 100s;
+ animation-duration: 7s;
+}
+</style>
+<style type="text/css">
+
+
+#items{position: absolute;width:100%;display:table-cell;text-align:center;vertical-align:middle;}
+.item{height:100%;display:inline-block;}
+.item *{vertical-align:middle;}
+</style>
+</head>
+<body>
+<div id="gamemap"><div id="map"></div>
+<img id="btn_setting" src="http://demo.elfjane.com/pokemon/img/ui/setting.png"/>
+<div id="profile">
+	<div id="uiUserInfo">
+		(<span id='guiLevel'>0</span>) <span id="guiUsername">unknow</span>
+	</div><br>
+	<div id="guiExperienceBar"><div id="experienceBar"><span>0%</span><div style="width:0px;"></div></div></div><br>
+	<div id="guiExp">exp : <span id="guiExperienceText">0/0</span></div>
+	<div id="guiItems"><img id="btn_i_items" src="http://demo.elfjane.com/pokemon/img/ui/items.png" /> : <span id="guiItemsText">0/0</span></div>
+	<span id="guiPokemon"><img id="btn_i_pokemons" src="http://demo.elfjane.com/pokemon/img/ui/pokemon.png" /> : <span id="guiPokemonText">0/0</span></span>
+</div>
+<div id="guiPagePokemon">pokemon</div>
+<div id="guiPagePokedex">Pokedex</div>
+<div id="guiPageItems">items</div>
+<div id="guiPageMapSetting">
+	<input type="button" class="styleChange" value="pokemon">
+	<input type="button" class="styleChange" value="pokemon2">
+	<input type="button" class="styleChange" value="pokemon3">
+	<input type="button" class="styleChange" value="pokemon4">
+	<input type="button" class="styleChange" value="default">
+	<input type="button" class="styleChange" value="game">
+	<input type="button" class="styleChange" value="red">
+	<input type="button" class="styleChange" value="yellow">
+</div>
+<div id="guiPageSetting">
+	<img id="btn_mapsetting" src="http://demo.elfjane.com/pokemon/img/ui/mapsetting2.png"/>
+	<img id="btn_item" src="http://demo.elfjane.com/pokemon/arena1.png" />
+	<img id="btn_robot" src="http://demo.elfjane.com/pokemon/img/ui/robot.png" />
+	<img id="btn_stop" src="http://demo.elfjane.com/pokemon/img/ui/stop.png" />
+	<img id="btn_location" src="http://demo.elfjane.com/pokemon/img/ui/location.png" />
+	<img id="btn_target" src="http://demo.elfjane.com/pokemon/img/ui/walk.png" />
+</div>
+<div id="items" style="z-index:1000;position: absolute;bottom: 100px;text-align: center;""></div>
+<div id="guiNearPokemon"><center><div id="guiNearPokemonData"></div></center></div>
+<div id="guiFooter">
+	<center>
+		<div id="guiFooterList">
+			<img id="btn_items" src="http://demo.elfjane.com/pokemon/img/ui/items.png" class="pokemonNoGet"/>
+			<img id="btn_pokemon" src="http://demo.elfjane.com/pokemon/img/ui/pokemon.png" />
+			<img id="btn_pokedex" src="http://demo.elfjane.com/pokemon/img/ui/pokedex.png" />
+		</div>	
+	</center>
+</div>
+</div>
+
+
+
+<p>near pokemon</p>
+<div class="clear"> </div>
+<p>test</p>
+<a href="/profile">get profile</a><br>
+<a href="/loc">get location</a><br>
+<a href="/iv">get inventory</a><br>
+<a href="/hb">get Heartbeat</a><br>
+<a href="/getforts">get forts</a><br>
+<a href="/get_near_pokemon">get near pokemon</a><br>
+<a href="/get_spawn_pokemon">get spawn pokemon</a><br>
+<a href="/get/near_fort">get near fort</a><br>
+<a href="/getfortdetails?fortid=0b0a9380b62a4dbda90eb5cff3e12525.16&lat=25.052806&lng=121.566977">get getfortdetails</a><br>
+<script>
+// game data
+var g_playerProfile;
+var g_inventory;
+var g_myLatLng;
+var g_spawn_pokemon;
+var g_items_drop;
+var g_spawn_history_pokemon;
+// gooogle map global data
+var myLatLng2 = {lat: 25.052019, lng: 121.568036};
+var myLatLng = {lat: 25.136476, lng: 121.506314};
+var targetLatLng;
+var map;
+var list_marker = [];
+var pokemon_maker = [];
+var target_key = '';
+var char_marker;
+var isSetCenterFirst = false;
+var map_click_target;
+$( ".styleChange" ).click(function() {
+	switch(this.value)
+	{
+		case "pokemon":
+		{
+		  	map.setOptions({"styles":stylePokemon});
+		} break;
+		case "pokemon2":
+		{
+		  	map.setOptions({"styles":stylePokemon2});
+		} break;
+		case "pokemon3":
+		{
+		  	map.setOptions({"styles":stylePokemon3});
+		} break;
+		case "pokemon4":
+		{
+		  	map.setOptions({"styles":stylePokemon4});
+		} break;
+		case "game":
+		{
+		  	map.setOptions({"styles":styleArray1});
+		} break;
+		case "red":
+		{
+		  	map.setOptions({"styles":styleArray2});
+		} break;
+		case "yellow":
+		{
+		  	map.setOptions({"styles":styleArray3});
+		} break;
+		case "yellow":
+		{
+		  	map.setOptions({"styles":styleArray3});
+		} break;		
+		case "default":
+		{
+		  	map.setOptions({"styles":null});
+		} break;
+	}
+
+});
+
+function getNowlatLng(latLng, map) {
+	if (typeof(map_click_target) == "undefined") { 
+		map_click_target = new google.maps.Marker({
+			position: latLng,
+			map: map
+		});
+	} else {
+		map_click_target.setPosition(latLng);
+	}
+	$.getJSON('./set/target/'+latLng.lat()+'/' +latLng.lng(), function(data) {
+		console.log(data);
+	});
+	$( "#clickPosition" ).html(latLng.lat() +", "+latLng.lng());
+}
+function updateMap()
+{
+	char_marker.setPosition( g_myLatLng );
+	if (!isSetCenterFirst) {
+		isSetCenterFirst = true;
+		map.setCenter(g_myLatLng);
+	}
+	var text_data = '';
+
+	$.each( g_spawn_history_pokemon, function( key, pokemon ) {
+		if (typeof(pokemon_maker[key]) != "undefined") {
+			return;
+		}
+		text_data = text_data + 'null';
+		//console.log(pokemon);
+		var pokemonLatLng =  {lat: pokemon.Latitude, lng: pokemon.Longitude};
+		var id = pokemon.info.id - 1;
+		var pokemon_name = g_pokemons_info.pokemon[id].name + '(' +pokemon.info.name+ ')';
+		pokemon_maker[key] = new google.maps.Marker({
+			position: pokemonLatLng,
+			map: map,
+			animation: "drop",
+			icon: "http://demo.elfjane.com/pokemon/img/mini/"+paddingLeft(pokemon.info.id,3)+".gif",
+			zIndex: google.maps.Marker.MAX_ZINDEX + 20,
+			title: pokemon_name
+		  });
+	});
+	var showtime = 1000;
+	$.each( g_items_drop, function( key, dropItem ) {
+		showtime += 1000;
+
+		setTimeout(function () {
+			ani_get_item(dropItem.item_id, dropItem.item_count)
+	    }, showtime);
+	});
+	
+}
+function initMap() {
+	map = new google.maps.Map(document.getElementById('map'), {
+		center: myLatLng,
+		zoom: 18,
+		disableDefaultUI: true,
+		styles: stylePokemon,
+		heading: 90,
+		tilt: 45,
+		mapTypeId: google.maps.MapTypeId.TERRAIN,
+		mapTypeControlOptions: {
+		  mapTypeIds: [
+			google.maps.MapTypeId.ROADMAP,
+			google.maps.MapTypeId.SATELLITE ,
+			google.maps.MapTypeId.HYBRID ,
+			google.maps.MapTypeId.TERRAIN ,
+
+		  ]
+		},
+	});
+	map.addListener('click', function(e) {
+		targetLatLng = e.latLng
+		getNowlatLng(e.latLng, map);
+	});
+
+	char_marker = new google.maps.Marker({
+		position: myLatLng,
+		map: map,
+		animation: "drop",
+		icon: img_walk,
+		zIndex: google.maps.Marker.MAX_ZINDEX + 1,
+		title: 'now'
+	});
+
+    var sunCircle = {
+        strokeColor: "#00eeaa",
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: "#00aa00",
+        fillOpacity: 0.35,
+        map: map,
+        center: myLatLng,
+        radius: 10 // in meters
+    };
+    makerCircle = new google.maps.Circle(sunCircle);
+    makerCircle.bindTo('center', char_marker, 'position');
+	setInterval(function() {
+		$.getJSON('./getforts', function(data) {
+			$.each( data, function( key, val ) {
+				var makLatLng = {lat: val.Latitude, lng: val.Longitude};
+				var img_fort = img_unknow;
+				if (val.FortType == 1) {
+					if (val.LureInfo != null) {
+						img_fort = img_lure_dot;
+					} else {
+						img_fort = img_dot;
+					}
+				} else if (!val.FortType) {
+					img_fort = img_arena;
+				}
+
+				if (typeof(list_marker[key]) == "undefined") {
+					var title_text = "key = "+ key + ", lat = " + makLatLng.lat + ", lng = " + makLatLng.lng;
+					list_marker[key] = new google.maps.Marker({
+						position: makLatLng,
+						map: map,
+						icon: img_fort,
+						title: title_text,
+						zIndex: google.maps.Marker.MAX_ZINDEX + 10,
+					});
+					attachSecretMessage(list_marker[key], title_text);
+				} else {
+					/*
+					t_marker = list_marker[key];
+					t_marker.setPosition( LatLng );
+					*/
+				}
+
+			});
+		});
+		$.getJSON('./get_near_pokemon', function(near_pokemon) {
+			var text_data = '';
+			$.each( near_pokemon, function( key, pokemon ) {
+				text_data = text_data + '<div class="nearPokemon"><img src="http://demo.elfjane.com/pokemon/img/sugimori/'+ key +'.jpg" /></div>';
+				
+			});
+			$( "#guiNearPokemonData" ).html(text_data);
+		});
+
+
+		$.getJSON('./get/near_fort', function(data) {
+			if (typeof( data.headFace) == "undefined") {
+				return;
+			}
+			var headFace = data.headFace;
+			char_marker.setIcon(img_char[headFace]);
+			var fort = data.fort;
+			if (typeof(fort) == "undefined") {
+				return;
+			}
+			if (typeof(fort.key) == "undefined") {
+				return;
+			}
+			var key  = fort.key;
+			/*
+			if (typeof(list_marker[key]) == "undefined") {
+				return;
+			}
+			list_marker[key].setIcon(img_target);
+			*/
+			var key2 = key + "1";
+			if (typeof(list_marker[key2]) != "undefined") {
+				return;
+			}
+			if (typeof(list_marker[key]) == "undefined") {
+				return;
+			}
+			if (target_key == '') {
+				target_key = key2;
+			}
+
+			var makLatLng = {lat: fort.latitude, lng: fort.longitude};
+			var title_text = '';
+			if (typeof(list_marker[key]) != "undefined") {
+				title_text = list_marker[key].getTitle();
+			}
+			list_marker[key2] = new google.maps.Marker({
+				position: makLatLng,
+				map: map,
+				animation: "drop",
+				icon: img_target2,
+				zIndex: google.maps.Marker.MAX_ZINDEX + 9,
+				title: title_text,
+
+			});
+			attachSecretMessage(list_marker[key2], title_text);
+			if (target_key != key2) {
+				list_marker[target_key].setMap(null);
+				delete list_marker[target_key];
+				target_key = key2;
+			}
+		});
+		// update data
+		$.getJSON('/profile', function(profile) {
+			g_playerProfile = profile;
+			$.getJSON('/iv', function(inventory) {			
+				g_inventory = inventory;
+				$.getJSON('/loc', function(latLng) {
+					g_myLatLng = {lat: latLng.latitude, lng: latLng.longitude};
+					$.getJSON('/get/items/drop', function(drop_item) {
+						g_items_drop = drop_item;
+						$.getJSON('/get/pokemon/spawn_history', function(spawn_history_pokemon) {
+							g_spawn_history_pokemon = spawn_history_pokemon;
+							updateMap();
+							updatePlayerProfile("#profile", g_playerProfile, g_inventory);
+						});
+					});
+
+				});
+			});
+		});
+
+	}, 5000);
+}
+
+</script>
+<div>map click position: <span id="clickPosition">點擊取得座標：</span></div>
+<p id="demo">點擊取得座標：</p>
+<button onclick="getLocation()">試一下</button>
+
+<div id="item_window" title="物品">12334</div>
+
+<script>
+var x=document.getElementById("demo");
+function getLocation() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(showPosition);
+	} else {
+		x.innerHTML="Geolocation is not supported by this browser.";
+	}
+}
+
+function showPosition(position)
+{
+x.innerHTML="Latitude: " + position.coords.latitude + 
+"<br />Longitude: " + position.coords.longitude;	
+}
+
+$( "#btn_item" ).click(function() {
+	var item = [0, 1, 2, 3, 4, 101, 102, 103, 104, 201, 202, 301, 401, 501, 701, 901];
+	var key = Math.floor(Math.random() * item.length);
+	ani_get_item(item[key],1);
+});
+
+</script>
+<script>
+
+$(function() {
+	$( "#mapToCenter" ).click(function() {
+		map.setCenter(char_marker.getPosition());
+	});
+	$( "#btn_location" ).click(function() {
+		map.setCenter(char_marker.getPosition());
+	});
+	$( "#btn_target" ).click(function() {
+		map.setCenter(map_click_target.getPosition());
+	});
+	$( "#btn_stop" ).click(function() {
+		$.getJSON('/set/target/stopmove', function(data) {
+			console.log(data);
+
+		});
+	});
+
+	$( "#btn_pokemon" ).click(function() {
+		$("#guiPagePokemon").load("/pokemon");
+		$("#guiPagePokemon").toggle();
+	});
+
+	$( "#btn_setting" ).click(function() {
+		$("#guiPageSetting").toggle();
+	});
+
+	$( "#btn_mapsetting" ).click(function() {
+		$("#guiPageMapSetting").toggle();
+	});
+});
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBLUPVN6Xb_fbzVKavMA94ISECExKfuaBA&callback=initMap" async defer></script>
+  </body>
+</html>

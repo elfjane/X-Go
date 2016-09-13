@@ -1,0 +1,20 @@
+{
+	  "hb" : {}
+	, "uid" : 0
+	, "token" : ""
+	, "player_profile" : {}
+	, "player_stats" : {}
+	, "forts" : {}
+	, "items_total" : 350
+	, "items" : {}
+	, "inventory" : {}
+	, "pokemons" : {}
+	, "pokemon_family" : {}
+	, "pokedex_entry" : {}
+	, "eggs" : {}
+	, "near_pokemon" : {}
+	, "spawn_pokemon" : {}
+	, "spawn_history_pokemon" : {}
+	, "drop_items" : []
+	, "location_move" : {}
+}

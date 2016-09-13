@@ -1,0 +1,53 @@
+https://hackage.haskell.org/package/pokemon-go-protobuf-types
+how sniffing game.
+http://www.bwalshy.com/wp/process/sniffing-pokemon-go-packets-with-mitmproxy/
+
+https://pixlr.com/editor/
+
+https://github.com/comdan66/evolution/
+
+加密程式碼
+npm install npk -g 
+
+use/egg_incubator
+
+回傳值
+{
+Status: 1,
+egg_incubator: {
+item_id: "EggIncubatorProto1066813760307451868",
+item_type: 901,
+incubator_type: 1,
+uses_remaining: null,
+pokemon_id: {
+low: -1135169030,
+high: 586763753,
+unsigned: false
+},
+start_km_walked: 145.81202697753906,
+target_km_walked: 147.81202697753906
+}
+}
+
+網友提供的程式碼
+https://github.com/nicoschmitt/necrobotvisualizer
+
+
+
+IVs)
+
+PM擁有額外的屬性, 叫做 個體屬性值. 這些屬性值隨機從0~15選取, 並直接加在PM的基礎屬性上.<因為公式部分很複雜, 我也並沒有完全瞭解這些公式的演算法, 難免會有大誤, 就把原文留著了哈…>
+
+Using Total_CP_Multiplier (a constant value explained below), we get a Pokmon’s core stats:
+
+使用 總CP加成係數, 我們可以獲得PM核心屬性:
+
+Attack = (Base Attack + Individual Attack) * Total_CP_Multiplier
+
+Defense = (Base Defense + Individual Defense) * Total_CP_Multiplier
+
+Stamina = (Base Stamina + Individual Stamina) * Total_CP_Multiplier
+
+Stamina here is shown to the player in the form of HP!
+
+耐力在這裡會以HP的形勢體現在玩家眼前.

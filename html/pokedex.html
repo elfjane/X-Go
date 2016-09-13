@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>Elfjane - Pokedex</title>
+<meta name="viewport" content="initial-scale=1.0">
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css" href="//demo.elfjane.com/pokemon/css/style.css">
+<link rel="stylesheet" href="http://demo.elfjane.com/pokemon/css/animate.min.css">
+<script src="//code.jquery.com/jquery-3.1.0.min.js"></script>
+<script src="//demo.elfjane.com/pokemon/global.js"></script>
+<script src="//demo.elfjane.com/pokemon/mapstyle.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/gameui.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/lang/pokemon/pokemons_zh_tw.js"></script>
+<script src="//demo.elfjane.com/pokemon/js/lang/pokemon/pokemons_en.js"></script>
+<style>
+</style>
+<style type="text/css">
+body{
+	margin: 10px;
+}
+#cont {
+  position: fixed;
+}
+
+#cont {
+  margin-top: 0;
+}
+</style>
+
+</head>
+<body>
+<div id="pokedexTotal">
+<table align="right">
+<tr>
+	<td>補獲總數 : </td>
+	<td><span id="pokedex_captured_total">0</span></td>
+</tr>
+<tr>
+	<td>發現總數 : </td>
+	<td><span id="pokedex_encountered_total">0</span></td>
+</tr>
+</table>
+</div>
+<div class="clear"></div>
+<div id="pokedex" class="pokedexui" style="padding:10px 0"></div>
+
+<script>
+
+function sort_pokedex_entry_number(a,b) {
+	return a.pokedex_entry_number - b.pokedex_entry_number;
+}
+
+
+var iv_pokedex = ___pokedex___;
+var array_pokedex = [];
+function update() {
+	var text_data = '';
+	var captured_total = 0;
+	var encountered_total = 0;
+	for(var i=1;i<=151;i++) {
+		//console.log(pokemon);
+		var id = i - 1;
+		var ids = paddingLeft(i.toString(),3);
+		var ids_img = ids;
+		var pokedex;
+		var pokemon_name = '';
+		var pokedex_count = '';
+		if (typeof(iv_pokedex[i]) == "undefined") {
+			ids_img = ids;
+			ids = '';
+		} else {
+			pokedex = iv_pokedex[i];
+			if (pokedex.times_captured < 1)	{
+				ids_img += "_100";
+			}
+			if (pokedex.times_captured == null)	{
+				pokedex.times_captured = 0;
+			}
+			pokemon_name = g_pokemons_info.pokemon[id].name + '<div>' +g_pokemons_en_info.pokemon[id].name+ '</div>';
+			captured_total    += pokedex.times_captured;
+			encountered_total += pokedex.times_encountered;
+			pokedex_count = pokedex.times_captured +'/'+pokedex.times_encountered
+		}
+
+		text_data += '<div class="pokedexlist"><div class="ids">'+ids+'</div>';
+		if (ids != '') {
+			text_data += '<img src="http://demo.elfjane.com/pokemon/img/sugimori/'+ ids_img +'.png" />';
+		} else {
+			text_data += ids_img;
+		}
+
+		text_data += '<div>'+pokemon_name+'</div>'
+		text_data += '<div>'+pokedex_count+'</div>';
+		text_data += '</div>';
+		
+	}
+	
+	$("#pokedex_captured_total").html(captured_total);
+	$("#pokedex_encountered_total").html(encountered_total);
+	$("#pokedex").html(text_data);
+}
+
+
+$(function() {
+	$.each( iv_pokedex, function( key, pokedex ) {
+		pokedex.key = key;
+		array_pokedex.push(pokedex);	
+	});
+	array_pokedex.sort(sort_pokedex_entry_number);
+	update();
+});
+</script>
+</body>
+</html>
